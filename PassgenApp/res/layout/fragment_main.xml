@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app=" http://schemas.android.com/apk/res-auto"
+    android:id="@+id/gp1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#1fff"
+            android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/tMaster"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Master Password"
+                android:inputType="textPassword" />
+
+            <EditText
+                android:id="@+id/tKeyword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Keyword"
+                android:inputType="text" />
+
+            <LinearLayout
+                android:id="@+id/gp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <EditText
+                    android:id="@+id/tResult"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:editable="false"
+                    android:hint="Result"
+                    android:inputType="none"
+                    android:typeface="monospace" />
+
+                <Button
+                    android:id="@+id/bReveal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reveal" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="#2fff"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:id="@+id/lOptions"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:text="Options: 8 upper/lower/numbers/symbols."
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <ToggleButton
+                    android:id="@+id/cShowOptions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textOff="SHOW"
+                    android:textOn="HIDE" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/panelOptions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp" >
+
+                <TextView
+                    android:id="@+id/lMin"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/sbMin"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center_vertical"
+                    android:text="Minimum n"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/lMax"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/sbMax"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignTop="@+id/sbMax"
+                    android:gravity="center_vertical"
+                    android:text="Maximum n"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <SeekBar
+                    android:id="@+id/sbMin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/lMin"
+                    android:max="13"
+                    android:progress="5" />
+
+                <SeekBar
+                    android:id="@+id/sbMax"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/sbMin"
+                    android:layout_below="@+id/sbMin"
+                    android:max="13"
+                    android:progress="5" />
+
+                <CheckBox
+                    android:id="@+id/cUpper"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/lMax"
+                    android:checked="true"
+                    android:text="UPPER" />
+
+                <CheckBox
+                    android:id="@+id/cLower"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/cUpper"
+                    android:layout_alignBottom="@+id/cUpper"
+                    android:layout_alignLeft="@+id/sbMax"
+                    android:checked="true"
+                    android:text="lower" />
+
+                <CheckBox
+                    android:id="@+id/cNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/cUpper"
+                    android:checked="true"
+                    android:text="Numbers" />
+
+                <CheckBox
+                    android:id="@+id/cSymbol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/cNumber"
+                    android:layout_alignBottom="@+id/cNumber"
+                    android:layout_alignLeft="@+id/cLower"
+                    android:text="Symbols" />
+
+                <Button
+                    android:id="@+id/bDefault"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cNumber"
+                    android:layout_centerHorizontal="true"
+                    android:text="Revert to default" />
+            </RelativeLayout>
+        </LinearLayout>
+	
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:background="#1fff"
+	        android:orientation="vertical" android:layout_marginTop="8dp" android:gravity="center" android:padding="8dp">
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Note: This version is just a quick port of the desktop application (goo.gl/uWmER). Please do not rate badly for missing features. Suggestions are highly welcome!"
+	            android:textAppearance="?android:attr/textAppearanceSmall" android:gravity="center" android:autoLink="web"/>
+	
+	    </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
