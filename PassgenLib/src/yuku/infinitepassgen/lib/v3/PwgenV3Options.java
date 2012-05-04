@@ -66,6 +66,12 @@ public class PwgenV3Options {
 		this.flags = on? (this.flags | PwgenV3.KAR_SYMBOL): (this.flags & ~PwgenV3.KAR_SYMBOL);
 	}
 	
+	@Override public boolean equals(Object o) {
+		if (!(o instanceof PwgenV3Options)) return false;
+		PwgenV3Options other = (PwgenV3Options) o;
+		return this.min == other.min && this.max == other.max && this.flags == other.flags;
+	}
+	
 	public String dumpToString() {
 		JSONObject json = new JSONObject();
 		try {

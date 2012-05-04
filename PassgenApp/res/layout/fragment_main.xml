@@ -29,6 +29,14 @@
                 android:layout_height="wrap_content"
                 android:hint="Keyword"
                 android:inputType="text" />
+            
+            <EditText
+                android:id="@+id/tNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="3"
+                android:hint="Personal notes (optional)"
+                android:inputType="textMultiLine|textCapSentences|textAutoCorrect" android:gravity="top"/>
 
             <LinearLayout
                 android:id="@+id/gp"

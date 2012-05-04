@@ -5,6 +5,7 @@ import android.database.Cursor;
 
 import java.util.Date;
 
+import yuku.infinitepassgen.lib.U;
 import yuku.infinitepassgen.lib.v3.PwgenV3Options;
 import yuku.infinitepassgen.storage.Table;
 
@@ -21,6 +22,14 @@ public class Bookmark {
 	public Date updatedTime;
 	
 	private Bookmark() {
+	}
+	
+	public boolean consideredEqualWith(Bookmark other) {
+		if (!U.equals(this.keyword, other.keyword)) return false;
+		if (!U.equals(this.note, other.note)) return false;
+		if (this.version != other.version) return false;
+		if (!U.equals(this.options, other.options)) return false;
+		return true;
 	}
 	
 	public static Bookmark create(String keyword, String note, PwgenV3Options options, Date createdTime, Date updatedTime) {

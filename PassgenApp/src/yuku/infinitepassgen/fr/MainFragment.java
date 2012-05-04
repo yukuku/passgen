@@ -55,6 +55,7 @@ public class MainFragment extends BaseFragment {
 	TextView tMaster;
 	TextView tKeyword;
 	TextView tResult;
+	TextView tNote;
 	Button bCopy;
 	TextView lOptions;
 	ToggleButton cShowOptions;
@@ -288,30 +289,34 @@ public class MainFragment extends BaseFragment {
 			return true;
 		} else if (itemId == R.id.menuSave) {
 			final String keyword = tKeyword.getText().toString();
+			final String note = tNote.length() == 0? null: tNote.getText().toString();
+			
 			if (keyword.trim().length() == 0) {
 				S.msgDialog(getActivity(), "Keyword is blank.");
 			} else {
 				final Bookmark old = S.getDb().getBookmarkByKeyword(keyword);
+				Bookmark neu = Bookmark.create(keyword, note, getOptionsFromWidgets(), new Date(), new Date());
 				if (old == null) {
-					Bookmark neu = Bookmark.create(keyword, null, getOptionsFromWidgets(), new Date(), new Date());
 					S.getDb().putBookmark(neu);
 					S.okToast("\"" + keyword + "\" saved.");
 				} else {
-					// TODO don't prompt if the existing data is exactly equal with this
-					new AlertDialog.Builder(getActivity())
-					.setMessage("\"" + keyword + "\" was previously saved. Do you want to overwrite it?")
-					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-						@Override public void onClick(DialogInterface dialog, int which) {
-							// update data
-							// TODO old.note = ...
-							old.updatedTime = new Date();
-							old.options = getOptionsFromWidgets();
-							S.getDb().putBookmark(old);
-							S.okToast("\"" + keyword + "\" updated.");
-						}
-					})
-					.setNegativeButton("Cancel", null)
-					.show();
+					if (old.consideredEqualWith(neu)) {
+						S.okToast("No changes to save.");
+					} else {
+						new AlertDialog.Builder(getActivity())
+						.setMessage("\"" + keyword + "\" was previously saved. Do you want to overwrite it?")
+						.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+							@Override public void onClick(DialogInterface dialog, int which) {
+								old.updatedTime = new Date();
+								old.note = note;
+								old.options = getOptionsFromWidgets();
+								S.getDb().putBookmark(old);
+								S.okToast("\"" + keyword + "\" updated.");
+							}
+						})
+						.setNegativeButton("Cancel", null)
+						.show();
+					}
 				}
 			}
 			return true;
@@ -325,6 +330,7 @@ public class MainFragment extends BaseFragment {
 
 	void applyBookmarkToWidgets(Bookmark bookmark) {
 		tKeyword.setText(bookmark.keyword);
+		tNote.setText(bookmark.note);
 		applyOptionsToWidgets(bookmark.options);
 	}
 	
@@ -348,6 +354,7 @@ public class MainFragment extends BaseFragment {
 		tKeyword.addTextChangedListener(tKeyword_textChanged);
 		tResult = V.get(res, R.id.tResult);
 		tResult.setOnTouchListener(tResult_touch);
+		tNote = V.get(res, R.id.tNote);
 		bCopy = V.get(res, R.id.bCopy);
 		bCopy.setOnClickListener(bCopy_click);
 		lOptions = V.get(res, R.id.lOptions);
