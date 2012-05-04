@@ -3,11 +3,15 @@ package yuku.infinitepassgen.fr;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,17 +29,26 @@ import android.widget.TextView.BufferType;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 import yuku.afw.App;
 import yuku.afw.V;
+import yuku.filechooser.FileChooserActivity;
+import yuku.filechooser.FileChooserConfig;
+import yuku.filechooser.FileChooserConfig.Mode;
+import yuku.filechooser.FileChooserResult;
 import yuku.infinitepassgen.S;
 import yuku.infinitepassgen.app.R;
 import yuku.infinitepassgen.fr.base.BaseFragment;
 import yuku.infinitepassgen.lib.v3.PwgenV3;
 import yuku.infinitepassgen.lib.v3.PwgenV3Options;
 import yuku.infinitepassgen.model.Bookmark;
+import yuku.infinitepassgen.util.IniFileImport;
 import yuku.infinitepassgen.widget.BaseTextWatcher;
 
 import com.actionbarsherlock.view.Menu;
@@ -44,6 +57,8 @@ import com.actionbarsherlock.view.MenuItem;
 
 public class MainFragment extends BaseFragment {
 	public static final String TAG = MainFragment.class.getSimpleName();
+	
+	private static final int REQCODE_import = 1;
 	
 	public MainFragment() {
 	}
@@ -320,6 +335,13 @@ public class MainFragment extends BaseFragment {
 				}
 			}
 			return true;
+		} else if (itemId == R.id.menuImport) {
+			FileChooserConfig config = new FileChooserConfig();
+			config.title = "Where is \"passgen3.ini\"?";
+			config.mode = Mode.Open;
+			config.initialDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+			config.pattern = "passgen3\\.ini";
+			startActivityForResult(FileChooserActivity.createIntent(App.context, config), REQCODE_import);
 		} else if (itemId == R.id.menuAbout) {
 			S.msgDialog(getActivity(), "Infinite Password Generator " + App.getVersionName());
 			return true;
@@ -383,6 +405,54 @@ public class MainFragment extends BaseFragment {
 		updateOptionsSummary();
 		displayResultWithHiding();
 		return res;
+	}
+	
+	@Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == REQCODE_import) {
+			FileChooserResult result = FileChooserActivity.obtainResult(data);
+			if (result != null) {
+				if (result.firstFilename != null) {
+					importFromIniFile(result.firstFilename);
+				}
+			}
+		}
+		
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	private void importFromIniFile(String inifile) {
+		try {
+			Scanner sc = new Scanner(new File(inifile));
+			List<String> lines = new ArrayList<String>();
+			while (sc.hasNextLine()) {
+				String line = sc.nextLine();
+				if (line.length() > 0) {
+					lines.add(line);
+				}
+			}
+			List<Bookmark> bookmarks = IniFileImport.parseIniFileLines(lines);
+			if (bookmarks.size() > 0) {
+				List<String> existings = new ArrayList<String>();
+				List<String> createds = new ArrayList<String>();
+				for (Bookmark bookmark: bookmarks) {
+					Bookmark old = S.getDb().getBookmarkByKeyword(bookmark.keyword);
+					if (old == null) {
+						S.getDb().putBookmark(bookmark);
+						createds.add(bookmark.keyword);
+					} else {
+						existings.add(bookmark.keyword);
+					}
+				}
+				S.msgDialog(getActivity(), 
+					(createds.size() == 0? "": ("New keywords imported: " + TextUtils.join(", ", createds) + "\n\n")) 
+					+ (existings.size() == 0? "": ("The following keywords already exist so it's not imported: " + TextUtils.join(", ", existings)))
+				); 
+			}
+			sc.close();
+		} catch (FileNotFoundException e) {
+			Log.e(TAG, "opening ini file", e);
+			S.msgDialog(getActivity(), "Failed to read " + inifile);
+		}
 	}
 
 	protected void calculateResult() {

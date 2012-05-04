@@ -2,5 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	<item android:id="@+id/menuLoad" android:icon="@drawable/ic_menu_4_collections_collection" android:title="Load" />
 	<item android:id="@+id/menuSave" android:icon="@drawable/ic_menu_5_content_save" android:title="Save" />
-	<item android:id="@+id/menuAbout" android:icon="@drawable/ic_menu_2_action_about" android:title="About" />
+	<item android:id="@+id/menuImport" android:showAsAction="never" android:title="Import" />
+	<item android:id="@+id/menuAbout" android:showAsAction="never" android:icon="@drawable/ic_menu_2_action_about" android:title="About" />
 </menu>
