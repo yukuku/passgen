@@ -46,10 +46,10 @@
                     android:typeface="monospace" />
 
                 <Button
-                    android:id="@+id/bReveal"
+                    android:id="@+id/bCopy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Reveal" />
+                    android:text="Copy" />
             </LinearLayout>
         </LinearLayout>
 

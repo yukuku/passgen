@@ -1,6 +1,7 @@
 package yuku.infinitepassgen.fr;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.Date;
@@ -53,7 +55,7 @@ public class MainFragment extends BaseFragment {
 	TextView tMaster;
 	TextView tKeyword;
 	TextView tResult;
-	Button bReveal;
+	Button bCopy;
 	TextView lOptions;
 	ToggleButton cShowOptions;
 	View panelOptions;
@@ -84,20 +86,6 @@ public class MainFragment extends BaseFragment {
 		}
 	};
 
-	private OnTouchListener bReveal_touch = new OnTouchListener() {
-		@Override public boolean onTouch(View v, MotionEvent event) {
-			int action = event.getActionMasked();
-			if (action == MotionEvent.ACTION_DOWN) {
-				result_revealing = true;
-				displayResultWithHiding();
-			} else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
-				result_revealing = false;
-				displayResultWithHiding();
-			}
-			return false;
-		}
-	};
-	
 	private OnCheckedChangeListener cShowOptions_checkedChange = new OnCheckedChangeListener() {
 		@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 			displayPanelOptions();
@@ -176,6 +164,30 @@ public class MainFragment extends BaseFragment {
 			updateOptionsSummary();
 			calculateResult();
 			displayResultWithHiding();
+		}
+	};
+	
+	private OnTouchListener tResult_touch = new OnTouchListener() {
+		@Override public boolean onTouch(View v, MotionEvent event) {
+			int action = event.getActionMasked();
+			if (action == MotionEvent.ACTION_DOWN) {
+				result_revealing = true;
+				displayResultWithHiding();
+			} else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
+				result_revealing = false;
+				displayResultWithHiding();
+			}
+			return false;
+		}
+	};
+	
+	private OnClickListener bCopy_click = new OnClickListener() {
+		@SuppressWarnings("deprecation") @Override public void onClick(View v) {
+			if (result_data != null) {
+				android.text.ClipboardManager cm = (android.text.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+				cm.setText(result_data);
+				Toast.makeText(App.context, "Generated password has been copied to the clipboard.\n\nTip: Touch the hidden password to see it.", Toast.LENGTH_SHORT).show();
+			}
 		}
 	};
 	
@@ -335,8 +347,9 @@ public class MainFragment extends BaseFragment {
 		tKeyword = V.get(res, R.id.tKeyword);
 		tKeyword.addTextChangedListener(tKeyword_textChanged);
 		tResult = V.get(res, R.id.tResult);
-		bReveal = V.get(res, R.id.bReveal);
-		bReveal.setOnTouchListener(bReveal_touch);
+		tResult.setOnTouchListener(tResult_touch);
+		bCopy = V.get(res, R.id.bCopy);
+		bCopy.setOnClickListener(bCopy_click);
 		lOptions = V.get(res, R.id.lOptions);
 		cShowOptions = V.get(res, R.id.cShowOptions);
 		cShowOptions.setOnCheckedChangeListener(cShowOptions_checkedChange);
@@ -361,6 +374,7 @@ public class MainFragment extends BaseFragment {
 		displayPanelOptions();
 		updateMinMaxLabels();
 		updateOptionsSummary();
+		displayResultWithHiding();
 		return res;
 	}
 
@@ -371,6 +385,8 @@ public class MainFragment extends BaseFragment {
 			PwgenV3Options options = getOptionsFromWidgets();
 			
 			result_data = PwgenV3.hitung(master, keyword, options, 8);
+		} else {
+			result_data = null;
 		}
 	}
 
@@ -393,14 +409,20 @@ public class MainFragment extends BaseFragment {
 	}
 
 	private void displayResultWithHiding() {
-		if (result_revealing) {
-			tResult.setText(result_data);
+		if (result_data == null) {
+			tResult.setText("");
+			bCopy.setEnabled(false);
 		} else {
-			StringBuilder sb = new StringBuilder();  
-			for (int i = 0; i < (result_data != null? result_data.length(): 0); i++) {
-				sb.append('\u2022');
+			if (result_revealing) {
+				tResult.setText(result_data);
+			} else {
+				StringBuilder sb = new StringBuilder();  
+				for (int i = 0; i < (result_data != null? result_data.length(): 0); i++) {
+					sb.append('\u2022');
+				}
+				tResult.setText(sb);
 			}
-			tResult.setText(sb);
+			bCopy.setEnabled(true);
 		}
 	}
 }
