@@ -3,4 +3,9 @@
     <style name="Theme.Passgen" parent="@style/Theme.passgenactionbase">
         <item name="android:windowBackground">@color/windowBackground</item>
     </style>
+    
+    <style name="Theme.Passgen.SemiTransparent" parent="@style/Theme.Passgen">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/windowBackgroundSemiTransparent</item>
+    </style>
 </resources>

@@ -110,7 +110,7 @@ public class BookmarksFragment extends BaseFragment {
 			}
 
 			@Override public void onLoaderReset(Loader<List<Bookmark>> loader) {}
-		});
+		}).forceLoad();
 	}
 	
 	@Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -179,11 +179,12 @@ public class BookmarksFragment extends BaseFragment {
 		}
 		
 		public void setData(List<Bookmark> data) {
+			this.data = data;
 			notifyDataSetChanged();
 		}
 
 		@Override public View newView(int position, ViewGroup parent) {
-			return LayoutInflater.from(getActivity()).inflate(R.layout.item_bookmark, parent);
+			return LayoutInflater.from(getActivity()).inflate(R.layout.item_bookmark, parent, false);
 		}
 
 		@Override public int getCount() {
