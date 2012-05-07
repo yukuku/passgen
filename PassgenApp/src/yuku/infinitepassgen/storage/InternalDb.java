@@ -57,6 +57,11 @@ public class InternalDb extends yuku.afw.storage.InternalDb {
 			db.update(Table.Bookmark.tableName(), bookmark.toContentValues(null), "_id=?", new String[] {String.valueOf(bookmark._id)});
 		}
 	}
+
+	public void deleteBookmarkById(long _id) {
+		SQLiteDatabase db = helper.getWritableDatabase();
+		db.delete(Table.Bookmark.tableName(), "_id=?", new String[] {String.valueOf(_id)});
+	}
 	
 	// end
 }

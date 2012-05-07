@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -37,6 +38,7 @@ import yuku.infinitepassgen.fr.base.BaseFragment;
 import yuku.infinitepassgen.model.Bookmark;
 import yuku.infinitepassgen.util.IniFileImport;
 
+import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -55,10 +57,47 @@ public class BookmarksFragment extends BaseFragment {
 	
 	ListView lsBookmarks;
 	BookmarkAdapter adapter;
+	ActionMode actionMode;
 
 	private OnItemClickListener lsBookmarks_itemClick = new OnItemClickListener() {
 		@Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			if (actionMode != null) return; // we're in action mode, ignore!
 			((BookmarksActivity) getActivity()).finishOk(adapter.getItem(position));
+		}
+	};
+
+	private OnItemLongClickListener lsBookmarks_itemLongClick = new OnItemLongClickListener() {
+		@Override public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+			if (actionMode != null) return false; // we're in action mode, ignore!
+			final Bookmark bookmark = adapter.getItem(position);
+			getSherlockActivity().startActionMode(new ActionMode.Callback() {
+				@Override public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+					getSherlockActivity().getSupportMenuInflater().inflate(R.menu.actionmode_bookmark, menu);
+					actionMode = mode;
+					mode.setTitle(bookmark.keyword);
+					return true;
+				}
+
+				@Override public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+					return false;
+				}
+
+				@Override public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+					int itemId = item.getItemId();
+					if (itemId == R.id.menuDelete) {
+						S.getDb().deleteBookmarkById(bookmark._id);
+						getLoaderManager().getLoader(1).forceLoad();
+						mode.finish();
+						return true;
+					}
+					return false;
+				}
+
+				@Override public void onDestroyActionMode(ActionMode mode) {
+					actionMode = null;
+				}
+			});
+			return true;
 		}
 	};
 	
@@ -90,6 +129,7 @@ public class BookmarksFragment extends BaseFragment {
 		View res = inflater.inflate(R.layout.fragment_bookmarks, container, false);
 		lsBookmarks = V.get(res, R.id.lsBookmarks);
 		lsBookmarks.setOnItemClickListener(lsBookmarks_itemClick);
+		lsBookmarks.setOnItemLongClickListener(lsBookmarks_itemLongClick);
 		return res;
 	}
 	
