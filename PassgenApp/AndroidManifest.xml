@@ -12,6 +12,8 @@
 			</intent-filter>
 		</activity>
 		
+		<activity android:name="yuku.infinitepassgen.ac.BookmarksActivity" android:label="Saved Keywords" />
+		
 		<activity android:name="yuku.filechooser.FileChooserActivity" />
 	</application>
 </manifest>
