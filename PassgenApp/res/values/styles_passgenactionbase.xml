@@ -18,7 +18,7 @@
 
 <resources>
 
-	<style name="Theme.passgenactionbase" parent="@style/Theme.Sherlock">
+	<style name="Theme.passgenactionbase" parent="@style/Theme.HoloEverywhereDark.Sherlock">
 		<item name="actionBarItemBackground">@drawable/selectable_background_passgenactionbase</item>
 		<item name="popupMenuStyle">@style/passgenactionbase_PopupMenu</item>
 		<item name="dropDownListViewStyle">@style/passgenactionbase_DropDownListView</item>
