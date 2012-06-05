@@ -206,7 +206,7 @@ public class MainFragment extends BaseFragment {
 	
 	protected void updateMinMaxLabels() {
 		lMin.setText("Minimum: " + (sbMin.getProgress() + 3));
-		lMax.setText("Minimum: " + (sbMax.getProgress() + 3));
+		lMax.setText("Maximum: " + (sbMax.getProgress() + 3));
 	}
 
 	private void updateOptionsSummary() {
