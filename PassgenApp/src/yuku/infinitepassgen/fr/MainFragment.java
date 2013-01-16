@@ -393,7 +393,7 @@ public class MainFragment extends BaseFragment {
 		if (master.length() != 0 && keyword.length() != 0) {
 			PwgenV3Options options = getOptionsFromWidgets();
 			
-			result_data = PwgenV3.hitung(master, keyword, options, 8);
+			result_data = PwgenV3.calculate(master, keyword, options, 8);
 		} else {
 			result_data = null;
 		}

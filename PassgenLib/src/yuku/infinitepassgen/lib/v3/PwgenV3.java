@@ -13,17 +13,17 @@ public class PwgenV3 {
 	public static final int KAR_NUMBER= 0x02;
 	public static final int KAR_SYMBOL= 0x01;
 
-	public static String hitung(String M, String K, PwgenV3Options options, int perbanyak) {
+	public static String calculate(String M, String K, PwgenV3Options options, int expand) {
 		StringBuilder S = new StringBuilder();
 		if (options == null || options.getFlags() == 0) {
-			// ga ada kar yang dipilih
+			// no characters selected
 			return null;
 		}
 
-		int retlen = perbanyak*16;
+		int retlen = expand*16;
 		byte[] G = new byte[retlen];
 
-		for (int i = 0; i < perbanyak; i++) {
+		for (int i = 0; i < expand; i++) {
 			S.append(M).append("pemisah").append(K);
 			byte[] m = md5(S); 
 			for (int j = 0; j < 16; j++) {
@@ -35,57 +35,57 @@ public class PwgenV3 {
 		x = (G[retlen-1] & 0xff) % x;
 		int len = options.getMin() + x;
 	
-		boolean[] bolehan = new boolean[256];
+		boolean[] allowed = new boolean[256];
 	
 		if (options.getUpper()) {
 			for (int i = 'A'; i <= 'Z'; i++) {
-				bolehan[i] = true;
+				allowed[i] = true;
 			}
 		}
 	
 		if (options.getLower()) {
 			for (int i = 'a'; i <= 'z'; i++) {
-				bolehan[i] = true;
+				allowed[i] = true;
 			}
 		}
 	
 		if (options.getNumber()) {
 			for (int i = '0'; i <= '9'; i++) {
-				bolehan[i] = true;
+				allowed[i] = true;
 			}
 		}
 	
 		if (options.getSymbol()) {
-			bolehan['.'] = true;
-			bolehan[','] = true;
-			bolehan['?'] = true;
-			bolehan['!'] = true;
-			bolehan['_'] = true;
-			bolehan['/'] = true;
-			bolehan['@'] = true;
-			bolehan['#'] = true;
-			bolehan['$'] = true;
-			bolehan['%'] = true;
-			bolehan['&'] = true;
-			bolehan['*'] = true;
+			allowed['.'] = true;
+			allowed[','] = true;
+			allowed['?'] = true;
+			allowed['!'] = true;
+			allowed['_'] = true;
+			allowed['/'] = true;
+			allowed['@'] = true;
+			allowed['#'] = true;
+			allowed['$'] = true;
+			allowed['%'] = true;
+			allowed['&'] = true;
+			allowed['*'] = true;
 		}
 	
-		StringBuilder jadi = new StringBuilder();
+		StringBuilder result = new StringBuilder();
 	
 		for (int i = 0; i < retlen; i++) {
-			if (bolehan[G[i] & 0xff]) {
-				jadi.append((char) (G[i] & 0xff));
-				if (jadi.length() >= len) {
+			if (allowed[G[i] & 0xff]) {
+				result.append((char) (G[i] & 0xff));
+				if (result.length() >= len) {
 					break;
 				}
 			}
 		}
 	
-		if (jadi.length() < len) {
-			Log.w(TAG, "perbanyak " + perbanyak + " not enough, doubling");
-			return hitung(M, K, options, perbanyak*2);
+		if (result.length() < len) {
+			Log.w(TAG, "expand " + expand + " not enough, doubling");
+			return calculate(M, K, options, expand*2);
 		} else {
-			return jadi.toString();
+			return result.toString();
 		}
 	}
 
