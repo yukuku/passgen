@@ -13,7 +13,11 @@ public class PwgenV3 {
 	public static final int KAR_NUMBER= 0x02;
 	public static final int KAR_SYMBOL= 0x01;
 
-	public static String calculate(String M, String K, PwgenV3Options options, int expand) {
+	public static String calculate(String M, String K, PwgenV3Options options) {
+		return calculate(M, K, options, 64);
+	}
+	
+	private static String calculate(String M, String K, PwgenV3Options options, int expand) {
 		StringBuilder S = new StringBuilder();
 		if (options == null || options.getFlags() == 0) {
 			// no characters selected
