@@ -183,20 +183,24 @@
                     android:text="Revert to default" />
             </RelativeLayout>
         </LinearLayout>
-	
-	    <LinearLayout
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:background="#1fff"
-	        android:orientation="vertical" android:layout_marginTop="8dp" android:gravity="center" android:padding="8dp">
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="#1fff"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="8dp" >
 
-	        <TextView
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="Note: This version is just a quick port of the desktop application (goo.gl/uWmER). Please do not rate badly for missing features. Suggestions are highly welcome!"
-	            android:textAppearance="?android:attr/textAppearanceSmall" android:gravity="center" android:autoLink="web"/>
-	
-	    </LinearLayout>
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:gravity="center"
+                android:text="Note: This is just a quick port of the desktop application (goo.gl/uWmER). This app is now free and open-sourced (github.com/yukuku/passgen)."
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </LinearLayout>
+	</LinearLayout>
 
 </ScrollView>
