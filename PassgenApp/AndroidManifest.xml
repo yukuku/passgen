@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="yuku.infinitepassgen.app" android:versionCode="5" android:versionName="3.4.2">
-	<uses-sdk android:minSdkVersion="8" android:targetSdkVersion="14" />
+	<uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17" />
 	
 	<uses-permission android:name="com.android.vending.BILLING"/>
 
-	<application android:icon="@drawable/ic_launcher" android:name="yuku.infinitepassgen.App" android:theme="@style/Theme.Passgen" android:label="Infinite Password Generator">
+	<application android:icon="@drawable/ic_launcher" android:name="yuku.infinitepassgen.App" android:theme="@style/Theme.Passgen" android:label="Infinite Password Generator" android:allowBackup="true">
 		<activity android:name="yuku.infinitepassgen.ac.MainActivity" android:label="Infinite Password Generator" android:uiOptions="splitActionBarWhenNarrow" android:configChanges="orientation|keyboardHidden|screenSize">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
