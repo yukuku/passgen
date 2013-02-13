@@ -31,8 +31,10 @@ import java.util.Date;
 
 import yuku.afw.App;
 import yuku.afw.V;
+import yuku.afw.storage.Preferences;
 import yuku.infinitepassgen.S;
 import yuku.infinitepassgen.ac.BookmarksActivity;
+import yuku.infinitepassgen.ac.SettingsActivity;
 import yuku.infinitepassgen.app.R;
 import yuku.infinitepassgen.fr.base.BaseFragment;
 import yuku.infinitepassgen.lib.v3.PwgenV3;
@@ -48,6 +50,7 @@ public class MainFragment extends BaseFragment {
 	public static final String TAG = MainFragment.class.getSimpleName();
 	
 	private static final int REQCODE_load = 1;
+	private static final int REQCODE_settings = 2;
 	
 	public MainFragment() {
 	}
@@ -309,6 +312,9 @@ public class MainFragment extends BaseFragment {
 				}
 			}
 			return true;
+		} else if (itemId == R.id.menuSettings) {
+			startActivityForResult(SettingsActivity.createIntent(), REQCODE_settings);
+			return true;
 		} else if (itemId == R.id.menuAbout) {
 			S.msgDialog(getActivity(), "Infinite Password Generator " + App.getVersionName());
 			return true;
@@ -383,8 +389,20 @@ public class MainFragment extends BaseFragment {
 					applyBookmarkToWidgets(bookmark);
 				}
 			}
+		} else if (requestCode == REQCODE_settings) {
+			applySettings();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	void applySettings() {
+		if (Preferences.getBoolean("longerPasswords", false)) {
+			sbMax.setMax(37); // offset 37 means 40
+			sbMin.setMax(37);
+		} else {
+			sbMax.setMax(13); // offset 13 means 16
+			sbMin.setMax(13);
+		}
 	}
 
 	protected void calculateResult() {
