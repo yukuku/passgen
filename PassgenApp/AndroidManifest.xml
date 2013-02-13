@@ -13,6 +13,7 @@
 		</activity>
 		
 		<activity android:name="yuku.infinitepassgen.ac.BookmarksActivity" android:label="Saved Keywords" android:theme="@style/Theme.Passgen.SemiTransparent" android:configChanges="orientation|keyboardHidden|screenSize"/>
+		<activity android:name="yuku.infinitepassgen.ac.SettingsActivity" android:label="Settings" android:configChanges="orientation|keyboardHidden|screenSize"/>
 		
 		<activity android:name="yuku.filechooser.FileChooserActivity" />
 	</application>
