@@ -8,3 +8,4 @@ local.properties
 
 # IntelliJ
 out/
+.idea/workspace.xml

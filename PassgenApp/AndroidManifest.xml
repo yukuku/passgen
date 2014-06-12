@@ -1,20 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="yuku.infinitepassgen.app" android:versionCode="6" android:versionName="3.5.0">
-	<uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17" />
-	
-	<uses-permission android:name="com.android.vending.BILLING"/>
+<manifest
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	package="yuku.infinitepassgen.app"
+	android:versionCode="6"
+	android:versionName="3.5.0">
 
-	<application android:icon="@drawable/ic_launcher" android:name="yuku.infinitepassgen.App" android:theme="@style/Theme.Passgen" android:label="Infinite Password Generator" android:allowBackup="true">
-		<activity android:name="yuku.infinitepassgen.ac.MainActivity" android:label="Infinite Password Generator" android:uiOptions="splitActionBarWhenNarrow" android:configChanges="orientation|keyboardHidden|screenSize">
+	<uses-sdk
+		android:minSdkVersion="8"
+		android:targetSdkVersion="19"/>
+
+	<uses-permission
+		android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+	<application
+		android:icon="@drawable/ic_launcher"
+		android:name="yuku.infinitepassgen.App"
+		android:theme="@style/Theme.Passgen"
+		android:label="Infinite Password Generator"
+		android:allowBackup="true">
+		<activity
+			android:name="yuku.infinitepassgen.ac.MainActivity"
+			android:label="Infinite Password Generator"
+			android:uiOptions="splitActionBarWhenNarrow"
+			android:configChanges="orientation|keyboardHidden|screenSize">
 			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
+				<action android:name="android.intent.action.MAIN"/>
+				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
-		
-		<activity android:name="yuku.infinitepassgen.ac.BookmarksActivity" android:label="Saved Keywords" android:theme="@style/Theme.Passgen.SemiTransparent" android:configChanges="orientation|keyboardHidden|screenSize"/>
-		<activity android:name="yuku.infinitepassgen.ac.SettingsActivity" android:label="Settings" android:configChanges="orientation|keyboardHidden|screenSize"/>
-		
-		<activity android:name="yuku.filechooser.FileChooserActivity" />
+
+		<activity
+			android:name="yuku.infinitepassgen.ac.BookmarksActivity"
+			android:label="Saved Keywords"
+			android:theme="@style/Theme.Passgen.SemiTransparent"
+			android:configChanges="orientation|keyboardHidden|screenSize"/>
+		<activity
+			android:name="yuku.infinitepassgen.ac.SettingsActivity"
+			android:label="Settings"
+			android:configChanges="orientation|keyboardHidden|screenSize"/>
+
+		<activity android:name="yuku.filechooser.FileChooserActivity"/>
 	</application>
 </manifest>
